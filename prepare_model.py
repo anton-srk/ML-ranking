@@ -509,13 +509,14 @@ class Solution:
             self.model.train()
             if i % self.change_train_loader_ep == 0:
                 triplets = self.sample_data_for_train_iter(self.glue_train_df, i)
-                train_dataset = TrainTripletsDataset(triplets,
-                                                     self.idx_to_text_mapping_train,
-                                                     vocab=self.vocab, oov_val=self.vocab['OOV'],
-                                                     preproc_func=self.simple_preproc)
+                train_dataset = TrainTripletsDataset(
+                    triplets, self.idx_to_text_mapping_train, vocab=self.vocab, oov_val=self.vocab['OOV'],
+                    preproc_func=self.simple_preproc
+                )
                 train_dataloader = torch.utils.data.DataLoader(
                     train_dataset, batch_size=self.dataloader_bs, num_workers=0,
-                    collate_fn=collate_fn, shuffle=True)
+                    collate_fn=collate_fn, shuffle=True
+                )
             for batch in tqdm(train_dataloader):
                 input_1, input_2, rel = batch
                 preds = self.model(input_1, input_2)
